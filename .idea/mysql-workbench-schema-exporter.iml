@@ -12,11 +12,11 @@
     <orderEntry type="module-library">
       <library name="PHARS">
         <CLASSES>
-          <root url="phar://$MODULE_DIR$/.idea/shelf/composer.phar" />
+          <root url="phar://$MODULE_DIR$/composer.phar" />
         </CLASSES>
         <JAVADOC />
         <SOURCES>
-          <root url="phar://$MODULE_DIR$/.idea/shelf/composer.phar" />
+          <root url="phar://$MODULE_DIR$/composer.phar" />
         </SOURCES>
       </library>
     </orderEntry>
