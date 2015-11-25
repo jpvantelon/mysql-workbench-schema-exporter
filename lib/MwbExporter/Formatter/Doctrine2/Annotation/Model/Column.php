@@ -46,7 +46,7 @@ class Column extends BaseColumn
                 ->writeIf($this->isAutoIncrement(),
                         ' * '.$this->getTable()->getAnnotation('GeneratedValue', array('strategy' => strtoupper($this->getConfig()->get(Formatter::CFG_GENERATED_VALUE_STRATEGY)))))
                 ->write(' */')
-                ->write('protected $'.$this->getColumnName().';')
+                ->write('protected $'.$this->getCamelCasedColumnName().';')
                 ->write('')
             ;
         }
@@ -58,7 +58,7 @@ class Column extends BaseColumn
     {
         if (!$this->isIgnored()) {
             $this->getDocument()->addLog(sprintf('  Writing setter/getter for column "%s"', $this->getColumnName()));
-    
+
             $table = $this->getTable();
             $converter = $this->getFormatter()->getDatatypeConverter();
             $nativeType = $converter->getNativeType($converter->getMappedType($this));
@@ -68,15 +68,15 @@ class Column extends BaseColumn
             $writer
                 // setter
                 ->write('/**')
-                ->write(' * Set the value of '.$this->getColumnName().'.')
+                ->write(' * Set the value of '.$this->getCamelCasedColumnName().'.')
                 ->write(' *')
-                ->write(' * @param '.$nativeType.' $'.$this->getColumnName())
+                ->write(' * @param '.$nativeType.' $'.$this->getCamelCasedColumnName())
                 ->write(' * @return '.$table->getNamespace())
                 ->write(' */')
-                ->write('public function set'.$this->getBeautifiedColumnName().'('.$typehint.'$'.$this->getColumnName().')')
+                ->write('public function set'.$this->getBeautifiedColumnName().'('.$typehint.'$'.$this->getCamelCasedColumnName().')')
                 ->write('{')
                 ->indent()
-                    ->write('$this->'.$this->getColumnName().' = $'.$this->getColumnName().';')
+                    ->write('$this->'.$this->getCamelCasedColumnName().' = $'.$this->getCamelCasedColumnName().';')
                     ->write('')
                     ->write('return $this;')
                 ->outdent()
@@ -84,14 +84,14 @@ class Column extends BaseColumn
                 ->write('')
                 // getter
                 ->write('/**')
-                ->write(' * Get the value of '.$this->getColumnName().'.')
+                ->write(' * Get the value of '.$this->getCamelCasedColumnName().'.')
                 ->write(' *')
                 ->write(' * @return '.$nativeType)
                 ->write(' */')
                 ->write('public function get'.$this->getBeautifiedColumnName().'()')
                 ->write('{')
                 ->indent()
-                    ->write('return $this->'.$this->getColumnName().';')
+                    ->write('return $this->'.$this->getCamelCasedColumnName().';')
                 ->outdent()
                 ->write('}')
                 ->write('')
@@ -104,7 +104,7 @@ class Column extends BaseColumn
     public function asAnnotation()
     {
         $attributes = array(
-            'name' => ($columnName = $this->getTable()->quoteIdentifier($this->getColumnName())) !== $this->getColumnName() ? $columnName : null,
+            'name' => $this->getDbColumnRealName(),
             'type' => $this->getFormatter()->getDatatypeConverter()->getMappedType($this),
         );
         if (($length = $this->parameters->get('length')) && ($length != -1)) {
@@ -122,5 +122,17 @@ class Column extends BaseColumn
         }
 
         return $attributes;
+    }
+
+    public function getCamelCasedColumnName()
+    {
+        return lcfirst($this->getBeautifiedColumnName());
+    }
+
+    protected function getDbColumnRealName()
+    {
+        $column_name = ($columnName = $this->getTable()->quoteIdentifier($this->getColumnName())) !== $this->getColumnName() ? $columnName : null;
+
+        return ((null === $column_name) && ($this->getColumnName() != $this->getCamelCasedColumnName())) ?  $columnName : null;
     }
 }
