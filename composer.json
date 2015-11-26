@@ -7,15 +7,16 @@
     "mysql workbench",
     "database",
     "cli",
-    "doctrine",
-    "propel",
-    "extjs",
-    "zend",
-    "sequelizejs"
+    "doctrine"
   ],
   "homepage": "https://github.com/jpvantelon/mysql-workbench-schema-exporter",
   "license": "MIT",
   "authors": [
+    {
+      "name": "jpvantelon",
+      "email": "jpvantelon@astek.fr",
+      "role": "Developer"
+    },
     {
       "name": "Johannes Mueller",
       "email": "circus2@web.de",
@@ -24,11 +25,6 @@
     {
       "name": "Toha",
       "email": "tohenk@yahoo.com",
-      "role": "Developer"
-    },
-    {
-      "name": "jpvantelon",
-      "email": "jpvantelon@astek.fr",
       "role": "Developer"
     }
   ],
