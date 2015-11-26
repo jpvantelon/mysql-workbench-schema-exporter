@@ -11,7 +11,7 @@ IF "%DEFINED_MANDATORY_PARAMETERS%" == "KO" (
 )
 
 SET EXPORT_COMMMAND=php %~dp0mysql-workbench-schema-export
-SET CONFIG_PATH=%~dp0..\data\export.json
+SET CONFIG_PATH=%~dp0..\config\export.json
 SET MODEL_PATH=%1
 SET DESTINATION_PATH=%2
 
