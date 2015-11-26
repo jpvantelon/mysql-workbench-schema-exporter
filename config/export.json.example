@@ -1,0 +1,27 @@
+{
+    "export": "doctrine2-annotation",
+    "zip": false,
+    "params": {
+        "filename": "%entity%.%extension%",
+        "indentation": 4,
+        "useTabs": false,
+        "eolDelimeter": "unix",
+        "addGeneratorInfoAsComment": false,
+        "skipPluralNameChecking": true,
+        "backupExistingFile": false,
+        "enhanceManyToManyDetection": true,
+        "sortTablesAndViews": true,
+        "logToConsole": true,
+        "useAutomaticRepository": true,
+        "bundleNamespace": "Namespace\\NameBundle",
+        "entityNamespace": "Entity",
+        "repositoryNamespace": "Namespace\\NameBundle\\Repository",
+        "nullableAttribute": "always",
+        "useAnnotationPrefix": "ORM\\",
+        "generateEntitySerialization": true,
+        "generateExtendableEntity": false,
+        "quoteIdentifierStrategy": "none",
+        "extendsClass": "",
+        "propertyTypehint": true
+    }
+}

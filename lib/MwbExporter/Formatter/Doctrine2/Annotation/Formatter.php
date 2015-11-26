@@ -27,6 +27,7 @@
 
 namespace MwbExporter\Formatter\Doctrine2\Annotation;
 
+use MwbExporter\Formatter\Doctrine2\Annotation\Model\Column;
 use MwbExporter\Formatter\Doctrine2\Formatter as BaseFormatter;
 use MwbExporter\Model\Base;
 use MwbExporter\Validator\ChoiceValidator;
@@ -69,7 +70,7 @@ class Formatter extends BaseFormatter
     }
 
     /**
-     * (non-PHPdoc)
+     * {@inheritdoc}
      * @see \MwbExporter\Formatter\Formatter::createDatatypeConverter()
      */
     protected function createDatatypeConverter()
@@ -78,19 +79,28 @@ class Formatter extends BaseFormatter
     }
 
     /**
-     * (non-PHPdoc)
+     * {@inheritdoc}
      * @see \MwbExporter\Formatter\Formatter::createTable()
      */
-    public function createTable(Base $parent, $node)
+    public function createTable(Base $parent = null, $node)
     {
         return new Model\Table($parent, $node);
     }
 
     /**
-     * (non-PHPdoc)
+     * {@inheritdoc}
+     * @see \MwbExporter\Formatter\FormatterInterface::createColumns()
+     */
+    public function createColumns(Base $parent = null, $node)
+    {
+        return new Model\Columns($parent, $node);
+    }
+
+    /**
+     * {@inheritdoc}
      * @see \MwbExporter\Formatter\FormatterInterface::createColumn()
      */
-    public function createColumn(Base $parent, $node)
+    public function createColumn(Base $parent = null, $node)
     {
         return new Model\Column($parent, $node);
     }
@@ -103,5 +113,31 @@ class Formatter extends BaseFormatter
     public function getFileExtension()
     {
         return 'php';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getOrderOption($sortValue)
+    {
+        $orders = parent::getOrderOption($sortValue);
+        $ordersCamelCased = array();
+        foreach($orders as $key => $value) {
+            $ordersCamelCased[$this->camelCasedText($key)] = $value;
+        }
+
+        return $ordersCamelCased;
+    }
+
+    /**
+     * Beautify an underscored_text and change into CamelCaseText.
+     *
+     * @param string $underscored_text
+     * @return string
+     */
+    public function camelCasedText($underscored_text)
+    {
+        $column = new Column();
+        return lcfirst($column->beautify($underscored_text));
     }
 }

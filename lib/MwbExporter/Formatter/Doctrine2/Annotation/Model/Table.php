@@ -148,6 +148,15 @@ class Table extends BaseTable
     }
 
     /**
+     * {@inheritdoc}
+     * @return Columns
+     */
+    public function getColumns()
+    {
+        return parent::getColumns();
+    }
+
+    /**
      * Get join annotation.
      *
      * @param string $joinType    Join type
@@ -594,6 +603,7 @@ class Table extends BaseTable
 
     protected function writeManyToManyVar(WriterInterface $writer)
     {
+        $fk2 = null;
         foreach ($this->getTableM2MRelations() as $relation) {
             $this->getDocument()->addLog(sprintf('  Writing setter/getter for N <=> N "%s"', $relation['refTable']->getModelName()));
 
@@ -901,6 +911,7 @@ class Table extends BaseTable
 
     protected function writeManyToManyGetterAndSetter(WriterInterface $writer)
     {
+        $fk2 = null;
         foreach ($this->getTableM2MRelations() as $relation) {
             $this->getDocument()->addLog(sprintf('  Writing N <=> N relation "%s"', $relation['refTable']->getModelName()));
 
@@ -983,7 +994,7 @@ class Table extends BaseTable
             ->indent()
                 ->write('return array(%s);', implode(', ', array_map(function($column) {
                     return sprintf('\'%s\'', $column);
-                }, $this->getColumns()->getColumnNames())))
+                }, $this->getColumns()->getCamelCasedColumnNames())))
             ->outdent()
             ->write('}')
         ;
